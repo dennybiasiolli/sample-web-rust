@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate rocket;
+use rocket::fs::FileServer;
 use rocket::serde::{json::Json, Serialize};
 
 #[derive(Serialize)]
@@ -25,4 +26,5 @@ fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![hello])
         .mount("/api", routes![hello_api])
+        .mount("/static", FileServer::from("static"))
 }

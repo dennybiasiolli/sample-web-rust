@@ -58,8 +58,14 @@ fn hello_api() -> Json<Message> {
     })
 }
 
-// mount the API endpoint
-rocket::build()
-        // ...
         .mount("/api", routes![hello_api])
+```
+
+
+## Serve static files
+
+```rust
+use rocket::fs::FileServer;
+
+        .mount("/static", FileServer::from("static"))
 ```
