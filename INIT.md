@@ -19,14 +19,14 @@ cargo add rocket
 #[macro_use]
 extern crate rocket;
 
-#[get("/")]
-fn index() -> &'static str {
+#[get("/hello")]
+fn hello() -> &'static str {
     "Hello, world!"
 }
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index])
+    rocket::build().mount("/", routes![hello])
 }
 ```
 
@@ -51,8 +51,8 @@ struct Message {
     message: String,
 }
 
-#[get("/")]
-fn index_api() -> Json<Message> {
+#[get("/hello")]
+fn hello_api() -> Json<Message> {
     Json(Message {
         message: "Hello, world!".to_string(),
     })
@@ -60,6 +60,6 @@ fn index_api() -> Json<Message> {
 
 // mount the API endpoint
 rocket::build()
-    .mount("/", routes![index])
-    .mount("/api", routes![index_api]) // <- add this line
+        // ...
+        .mount("/api", routes![hello_api])
 ```

@@ -8,13 +8,13 @@ struct Message {
     message: String,
 }
 
-#[get("/")]
-fn index() -> &'static str {
+#[get("/hello")]
+fn hello() -> &'static str {
     "Hello, world!"
 }
 
-#[get("/")]
-fn index_api() -> Json<Message> {
+#[get("/hello")]
+fn hello_api() -> Json<Message> {
     Json(Message {
         message: "Hello, world!".to_string(),
     })
@@ -23,6 +23,6 @@ fn index_api() -> Json<Message> {
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index])
-        .mount("/api", routes![index_api])
+        .mount("/", routes![hello])
+        .mount("/api", routes![hello_api])
 }
