@@ -1,9 +1,11 @@
 #[macro_use]
 extern crate rocket;
 use rocket::fs::FileServer;
-use rocket::serde::{json::Json, Serialize};
+use rocket::serde::{json::Json, Deserialize, Serialize};
+#[cfg(test)]
+mod main_test;
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 #[serde(crate = "rocket::serde")]
 struct Message {
     message: String,
