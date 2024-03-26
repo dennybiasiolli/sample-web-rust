@@ -28,6 +28,35 @@ fn test_api_hello_route() {
 }
 
 #[test]
+fn test_hello_advanced_route() {
+    let rocket = rocket();
+    let client = Client::tracked(rocket).expect("valid rocket instance");
+    let req = client.get("/hello_advanced/John/25/true");
+    let response = req.dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(
+        response.into_string().unwrap(),
+        "You're a cool 25 year old, John!"
+    );
+
+    let req = client.get("/hello_advanced/John/25/false");
+    let response = req.dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(
+        response.into_string().unwrap(),
+        "John, we need to talk about your coolness."
+    );
+
+    let req = client.get("/hello_advanced/John/25");
+    let response = req.dispatch();
+    assert_eq!(response.status(), Status::NotFound);
+
+    let req = client.get("/hello_advanced/John/25/invalid");
+    let response = req.dispatch();
+    assert_eq!(response.status(), Status::UnprocessableEntity);
+}
+
+#[test]
 fn test_static_route() {
     let rocket = rocket();
     let client = Client::tracked(rocket).expect("valid rocket instance");

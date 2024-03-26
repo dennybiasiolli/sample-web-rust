@@ -63,6 +63,23 @@ fn hello_api() -> Json<Message> {
 ```
 
 
+## Dynamic Paths
+
+```rust
+#[get("/hello_advanced/<name>/<age>/<cool>")]
+fn hello_advanced(name: &str, age: u8, cool: bool) -> String {
+    if cool {
+        format!("You're a cool {} year old, {}!", age, name)
+    } else {
+        format!("{}, we need to talk about your coolness.", name)
+    }
+}
+
+// ...
+    .mount("/", routes![hello, hello_advanced])
+```
+
+
 ## Serve static files
 
 ```rust
