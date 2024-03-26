@@ -38,3 +38,13 @@ fn test_static_route() {
     assert!(body.contains("<title>Static HTML page</title>"));
     assert!(body.contains("<h1>Static HTML page</h1>"));
 }
+
+#[test]
+fn test_delay_route() {
+    let rocket = rocket();
+    let client = Client::tracked(rocket).expect("valid rocket instance");
+    let req = client.get("/async/delay/1");
+    let response = req.dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.into_string().unwrap(), "Waited for 1 seconds");
+}

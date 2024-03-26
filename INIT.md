@@ -58,7 +58,8 @@ fn hello_api() -> Json<Message> {
     })
 }
 
-        .mount("/api", routes![hello_api])
+// ...
+    .mount("/api", routes![hello_api])
 ```
 
 
@@ -67,5 +68,20 @@ fn hello_api() -> Json<Message> {
 ```rust
 use rocket::fs::FileServer;
 
-        .mount("/static", FileServer::from("static"))
+// ...
+    .mount("/static", FileServer::from("static"))
+```
+
+
+## Async requests
+
+```rust
+#[get("/delay/<seconds>")]
+async fn delay(seconds: u64) -> String {
+    sleep(Duration::from_secs(seconds)).await;
+    format!("Waited for {} seconds", seconds)
+}
+
+// ...
+    .mount("/async", routes![delay])
 ```

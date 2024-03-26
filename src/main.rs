@@ -2,6 +2,8 @@
 extern crate rocket;
 use rocket::fs::FileServer;
 use rocket::serde::{json::Json, Deserialize, Serialize};
+use rocket::tokio::time::{sleep, Duration};
+
 #[cfg(test)]
 mod main_test;
 
@@ -23,10 +25,17 @@ fn hello_api() -> Json<Message> {
     })
 }
 
+#[get("/delay/<seconds>")]
+async fn delay(seconds: u64) -> String {
+    sleep(Duration::from_secs(seconds)).await;
+    format!("Waited for {} seconds", seconds)
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![hello])
         .mount("/api", routes![hello_api])
         .mount("/static", FileServer::from("static"))
+        .mount("/async", routes![delay])
 }
